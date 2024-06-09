@@ -1,6 +1,7 @@
-import Nav from './Nav';
+import Nav from './components/Nav';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/logout" element= {<h1>Logout component</h1>} />
       </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
