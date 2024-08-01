@@ -10,13 +10,13 @@ const Nav = () => {
     }
     return (
         <div>
-            <ul classNae="nav-ul">
+            <ul className="nav-ul">
                 <li><Link to="/products">Product</Link></li>
                 <li><Link to="/add-product">Add Product</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
                 <li>
                     {auth ? <Link onClick={logout } to="/signup">Logout</Link> : 
-                    <Link to="/register">Signup</Link>}
+                    <Link to="/register">Signup</Link> }
                 </li>
             </ul>
         </div>
