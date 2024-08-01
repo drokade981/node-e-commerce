@@ -16,7 +16,11 @@ const Nav = () => {
                 <li><Link to="/profile">Profile</Link></li>
                 <li>
                     {auth ? <Link onClick={logout } to="/signup">Logout</Link> : 
-                    <Link to="/register">Signup</Link> }
+                    <>
+                    <Link to="/register">Signup</Link>
+                    <Link to="/login">Login</Link>
+                    </> }
+                    
                 </li>
             </ul>
         </div>
