@@ -10,19 +10,20 @@ const Nav = () => {
     }
     return (
         <div>
-            <ul className="nav-ul">
-                <li><Link to="/products">Product</Link></li>
-                <li><Link to="/add-product">Add Product</Link></li>
-                <li><Link to="/profile">Profile</Link></li>
-                <li>
-                    {auth ? <Link onClick={logout } to="/signup">Logout</Link> : 
-                    <>
-                    <Link to="/register">Signup</Link>
-                    <Link to="/login">Login</Link>
-                    </> }
-                    
-                </li>
-            </ul>
+            <img className="logo" src="./logo.png" alt="logo" />
+            {auth ? 
+                <ul className="nav-ul">
+                    <li><Link to="/products">Product</Link></li>
+                    <li><Link to="/add-product">Add Product</Link></li>
+                    <li><Link to="/profile">Profile</Link></li>
+                    <li><Link onClick={logout } to="/signup">Logout</Link></li>
+                </ul>                
+                :
+                <ul className="nav-ul nav-right">
+                    <li><Link to="/register">Signup</Link></li>
+                        <li><Link to="/login">Login</Link></li>
+                </ul>
+            }            
         </div>
     )
 }

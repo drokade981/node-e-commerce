@@ -38,6 +38,7 @@ const Login = () => {
     }
     return (
         <div className="login">
+            <h1>Login</h1>
             <input type="text" className="inputBox" onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" />
             <input type="password" className="inputBox" onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" />
             <button className="appButton" type="button" onClick={handleLogin} >Login</button>
