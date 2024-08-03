@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 require('./db/config');
-const User = require('./db/user');
+const User = require('./models/User');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,9 @@ app.post('/login', async (req, resp) => {
         resp.send({"status" : false, "message": "no user found"});
     }
 })
+
+app.use('/api', productRoutes);
+
 // const productSchema = new mongoose.Schema({});
 // const product = mongoose.model('products', productSchema);
 // const data = await product.find();
