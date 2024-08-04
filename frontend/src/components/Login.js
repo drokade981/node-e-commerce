@@ -3,7 +3,7 @@ import config from '../config';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const lgoingUrl = config.apiBaseUrl+'/login';
+    const logingUrl = config.apiBaseUrl+'/login';
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Login = () => {
     })
     const handleLogin = async () => {
         console.log(email, password);
-        let result = await fetch(lgoingUrl, 
+        let result = await fetch(logingUrl, 
         {
             method : 'post',
             body : JSON.stringify({email, password}),
