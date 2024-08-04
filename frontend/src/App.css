@@ -77,6 +77,12 @@
   margin-top: 3px;
   margin-left: 20px;
 }
+.invalid-input {
+  color: red;
+  margin-left: 20px;
+  margin-top: -20px;
+  display: block;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
