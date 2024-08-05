@@ -67,9 +67,11 @@
   border: solid 1px;
   cursor: pointer;
 }
+
 .nav-right {
   text-align: right;
 }
+
 .logo {
   width: 45px;
   float: left;
@@ -77,11 +79,27 @@
   margin-top: 3px;
   margin-left: 20px;
 }
+
 .invalid-input {
   color: red;
   margin-left: 20px;
   margin-top: -20px;
   display: block;
+}
+
+.product-list{
+  text-align: center;
+  margin-top: 50px;
+}
+
+.product-list ul li {
+  display: inline-block;
+  border: 1px solid skyblue;
+  padding: 5px;
+  width: 150px;
+}
+.product-list ul {
+  margin: 0;
 }
 @keyframes App-logo-spin {
   from {
