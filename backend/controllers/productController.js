@@ -10,14 +10,26 @@ exports.createProduct = async (req, res) => {
     }
 };
 
-exports.getProduct = async (req, res) => {
-   
+exports.getProduct = async (req, res) => {   
     try {
         let products = await Product.find();
         if (products.length > 0) {
             res.status(200).json({status : true, message: 'Ptoduct fetched successfully', data: products });
         } else {
-            res.status(201).json({ message: 'Ptoduct not found' });
+            res.status(201).json({ message: 'Product not found' });
+        }
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+exports.deleteProduct = async (req, res) => {   
+    try {       
+        let result = await Product.deleteOne({_id : req.params.id});
+        if (result.deletedCount == 1 ) {
+            res.status(200).json({status : true, message: 'Ptoduct deleted successfully', data: true });
+        } else {
+            res.status(201).json({ message: 'Product not found' });
         }
     } catch (err) {
         res.status(400).json({ error: err.message });
