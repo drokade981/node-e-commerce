@@ -1,16 +1,21 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import config from '../config';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams  } from 'react-router-dom';
 
-const AddProduct = () => {
+const UpdateProductComponent = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [company, setCompany] = useState('');
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
-    const productUrl = config.apiBaseUrl+'/api/product';
-    const [formState, setFormState] = useState('')
+    const productUrl = config.apiBaseUrl+'/api/product/';
+    const [formState, setFormState] = useState('');
+    const params = useParams();
+
+    useEffect(() => {
+        getProduct();        
+    },[]);
 
     const validate = () => {
         const errors = {};
@@ -41,7 +46,23 @@ const AddProduct = () => {
         return Object.keys(errors).length === 0;
     };
 
-    const addProduct = async(e) => {
+
+    const getProduct = async () => {
+        let product = await fetch(productUrl+params.id, {
+            method : 'get'
+        });
+
+        product = await product.json();
+        if (product.status) {
+            setName(product.data.name);
+            setPrice(product.data.price);
+            setCategory(product.data.category);
+            setCompany(product.data.company);
+        }
+        
+    }
+
+    const updateProduct = async(e) => {
     //    if(!name || !price || !company || !category)
     //     { 
     //         // errors.status = true;
@@ -51,9 +72,9 @@ const AddProduct = () => {
         if (validate()) {
             const userId = JSON.parse(localStorage.getItem('user')).user._id;
             console.log(name, price, category, company, userId);
-            let result = await fetch(productUrl, 
+            let result = await fetch(productUrl+params.id, 
             {
-                method : 'post',
+                method : 'put',
                 body : JSON.stringify({name, price, category, company, userId}),
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +82,7 @@ const AddProduct = () => {
             });
             result = await result.json();
             
-            setFormState('Product added successfully');
+            setFormState('Product updated successfully');
             setTimeout(()=> {
                 navigate('/products');
             }, 3000)
@@ -71,7 +92,7 @@ const AddProduct = () => {
     return (
         <div>
             <div className="product">
-                <h1>Add Product</h1>
+                <h1>Update Product</h1>
                 <h3 className="form_status text-success">{formState}</h3>
                 <input type="text" className="inputBox" onChange={(e) => {setName(e.target.value)}} value={name} placeholder="Enter name" />
                 {errors.name && <span className="invalid-input">{errors.name}</span>}
@@ -81,10 +102,10 @@ const AddProduct = () => {
                 {errors.category && <span className="invalid-input">{errors.category}</span>}
                 <input type="text" className="inputBox" onChange={(e) => setCompany(e.target.value)} value={company} placeholder="Enter Company" />
                 {errors.company && <span className="invalid-input">{errors.company}</span>}
-                <button className="appButton" type="button" onClick={addProduct} >Add Product</button>
+                <button className="appButton" type="button" onClick={updateProduct} >Update Product</button>
             </div>
         </div>
     )
 }
 
-export default AddProduct
+export default UpdateProductComponent

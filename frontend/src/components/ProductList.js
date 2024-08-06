@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import config from '../config';
+import { Link } from 'react-router-dom';
 
 
 const ProductList = () => {
-    const productUrl = config.apiBaseUrl+'/api/products';
+    const productUrl = config.apiBaseUrl+'/api/';
     const [products, setProducts] = useState([]);
     
     useEffect(() => {
@@ -11,13 +12,13 @@ const ProductList = () => {
     },[]);
 
     const getProducts = async () => {
-        let result = await fetch(productUrl);
+        let result = await fetch(productUrl+'products');
         result = await result.json();
         setProducts(result.data);
     }
 
     const deleteProduct = async (id) => {
-        let result = await fetch(productUrl+'/'+id, {
+        let result = await fetch(productUrl+'product/'+id, {
             method : 'delete'
         });
         result = await result.json();
@@ -26,11 +27,11 @@ const ProductList = () => {
             getProducts();
         }
     }
-    
+
     return (
         <div className="product-list">
             <h1>product list</h1>
-            <ul>
+           <ul>
                 <li>Sr. No.</li>
                 <li>Name</li>
                 <li>Price</li>
@@ -46,7 +47,10 @@ const ProductList = () => {
                          <li>{item.price}</li>
                         <li>{item.category ? item.category : "n/a"}</li>
                         <li>{item.company ?  item.company : "n/a"}</li>
-                        <li><button type="button" onClick={() => deleteProduct(item._id)} >Delete</button></li>
+                        <li>
+                            <button type="button" onClick={() => deleteProduct(item._id)} >Delete</button>
+                            <Link to={"/update-product/"+item._id} >update</Link>
+                        </li>
                     </ul>
                 ) : 'no'
             }
