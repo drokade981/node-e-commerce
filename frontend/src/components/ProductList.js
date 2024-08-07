@@ -6,13 +6,18 @@ import { Link } from 'react-router-dom';
 const ProductList = () => {
     const productUrl = config.apiBaseUrl+'/api/';
     const [products, setProducts] = useState([]);
+    const [search, setSearch] = useState('');
     
     useEffect(() => {
         getProducts();
-    },[]);
+    },[search]);
 
     const getProducts = async () => {
-        let result = await fetch(productUrl+'products');
+        let url = productUrl+`products`;
+        if (search) {
+        url += `?search=${search}`;
+        }
+        let result = await fetch(url);
         result = await result.json();
         setProducts(result.data);
     }
@@ -28,10 +33,15 @@ const ProductList = () => {
         }
     }
 
+    const searchHandle = (e) => {
+        setSearch(e.target.value);
+    }
+
     return (
         <div className="product-list">
             <h1>product list</h1>
-           <ul>
+            <input type="text" className="search-box" placeholder="Search" onChange={searchHandle}/>
+            <ul>
                 <li>Sr. No.</li>
                 <li>Name</li>
                 <li>Price</li>
