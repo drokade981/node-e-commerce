@@ -12,11 +12,23 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {   
     try {
-        let products = await Product.find();
+        const { search } = req.query;
+        let filter = {};
+        if (search) {
+            filter = {
+                $or: [
+                  { name: { $regex: search, $options: 'i' } },
+                  { category: { $regex: search, $options: 'i' } },
+                  { company: { $regex: search, $options: 'i' } },
+                ],
+              };
+        }
+        let products = await Product.find(filter);
+
         if (products.length > 0) {
             res.status(200).json({status : true, message: 'Product fetched successfully', data: products });
         } else {
-            res.status(201).json({ message: 'Product not found' });
+            res.status(200).json({status : true, message: 'Product not found', data: products });
         }
     } catch (err) {
         res.status(400).json({ error: err.message });
