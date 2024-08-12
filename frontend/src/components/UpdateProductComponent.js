@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import config from '../config';
 import { useNavigate, useParams  } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UpdateProductComponent = () => {
     const [name, setName] = useState('');
@@ -46,10 +47,12 @@ const UpdateProductComponent = () => {
         return Object.keys(errors).length === 0;
     };
 
-
     const getProduct = async () => {
         let product = await fetch(productUrl+params.id, {
-            method : 'get'
+            method : 'get',
+            headers : {
+                Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
+            }
         });
 
         product = await product.json();
@@ -70,19 +73,23 @@ const UpdateProductComponent = () => {
     //     }
         e.preventDefault();
         if (validate()) {
-            const userId = JSON.parse(localStorage.getItem('user')).user._id;
-            console.log(name, price, category, company, userId);
+            const userId = JSON.parse(localStorage.getItem('user'))._id;
+
             let result = await fetch(productUrl+params.id, 
             {
                 method : 'put',
                 body : JSON.stringify({name, price, category, company, userId}),
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
                 },
             });
             result = await result.json();
-            
-            setFormState('Product updated successfully');
+            if (result.status) {
+                toast.success(result.message);
+            } else {
+                toast.warn(result.message);
+            }
             setTimeout(()=> {
                 navigate('/products');
             }, 3000)
@@ -93,7 +100,6 @@ const UpdateProductComponent = () => {
         <div>
             <div className="product">
                 <h1>Update Product</h1>
-                <h3 className="form_status text-success">{formState}</h3>
                 <input type="text" className="inputBox" onChange={(e) => {setName(e.target.value)}} value={name} placeholder="Enter name" />
                 {errors.name && <span className="invalid-input">{errors.name}</span>}
                 <input type="text" className="inputBox" onChange={(e) => setPrice(e.target.value)} value={price} placeholder="Enter price" />

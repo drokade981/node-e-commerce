@@ -3,7 +3,7 @@ import config from '../config';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const logingUrl = config.apiBaseUrl+'/login';
+    const logingUrl = config.apiBaseUrl+'/api/login';
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -25,12 +25,10 @@ const Login = () => {
             },
         });
         result = await result.json(); 
-        console.log(result);
                
-        if (result.user.name) {
-            console.log('user');
-            
-            localStorage.setItem('user', JSON.stringify(result));
+        if (result.status) {
+            localStorage.setItem('user', JSON.stringify(result.data.user));
+            localStorage.setItem('token', JSON.stringify(result.data.token));
             navigate('/');
         } else {
             alert('Please enter correct credential');
