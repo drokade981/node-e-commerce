@@ -24,7 +24,7 @@ const ProductList = () => {
                     Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
                 }
             });
-            result = await result.json();
+            result = await result.json();   
             setProducts(result.data);
         } catch (error) {
             console.log('err', error);            
