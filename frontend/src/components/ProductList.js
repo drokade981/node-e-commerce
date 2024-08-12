@@ -1,35 +1,49 @@
 import React, {useState, useEffect} from 'react'
 import config from '../config';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ProductList = () => {
     const productUrl = config.apiBaseUrl+'/api/';
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
     
     useEffect(() => {
         getProducts();
     },[search]);
 
     const getProducts = async () => {
-        let url = productUrl+`products`;
-        if (search) {
-        url += `?search=${search}`;
+        try {            
+            let url = productUrl+`products`;
+            if (search) {
+                url += `?search=${search}`;
+            }
+            let result = await fetch(url, {
+                headers : {
+                    Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
+                }
+            });
+            result = await result.json();   
+            setProducts(result.data);
+        } catch (error) {
+            console.log('err', error);            
         }
-        let result = await fetch(url);
-        result = await result.json();
-        setProducts(result.data);
     }
 
     const deleteProduct = async (id) => {
         let result = await fetch(productUrl+'product/'+id, {
-            method : 'delete'
+            method : 'delete',
+            headers : {
+                Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
+            }
         });
         result = await result.json();
         if (result.data) {
-            alert('product deleted successfully');
-            getProducts();
+            toast.success(result.message);
+            setTimeout(()=> {
+                getProducts();
+            }, 3000)            
         }
     }
 
@@ -50,7 +64,7 @@ const ProductList = () => {
                 <li>Action</li>
             </ul>
             {
-                products.length ? products.map((item, index) => 
+                (products) ? products.map((item, index) => 
                     <ul key={item._id}>
                         <li>{index+1}</li>
                         <li>{item.name}</li>

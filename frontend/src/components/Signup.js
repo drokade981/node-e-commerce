@@ -15,7 +15,7 @@ const Signup = () => {
         }
     })
 
-    const url = `${config.apiBaseUrl}/register`;
+    const url = `${config.apiBaseUrl}/api/register`;
 
     const collectData = async () => {
         console.log(name, email, password);
@@ -28,8 +28,9 @@ const Signup = () => {
         });
         result = await result.json();
         console.log(result);
-        if (result) {
-            localStorage.setItem('user', JSON.stringify(result));
+        if (result.status) {
+            localStorage.setItem('user', JSON.stringify(result.data.user));
+            localStorage.setItem('token', JSON.stringify(result.data.token));
             navigate('/');
         }
         

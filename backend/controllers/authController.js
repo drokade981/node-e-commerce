@@ -3,25 +3,11 @@ const User = require('../models/User');
 const Jwt = require('jsonwebtoken');
 const JwtKey = 'node-e-comm';
 
-// app.post('/login', async (req, resp) => {
-//     if (req.body.password && req.body.email) {
-//         let user = await User.findOne(req.body).select('-password');
-//         if (user) {
-//             resp.send({user});
-//         } else {
-//             resp.send({"status" : false, "message": "no user found"});
-//         }
-//     } else {
-//         resp.send({"status" : false, "message": "no user found"});
-//     }
-// })
-
 exports.login = async (req, resp) => {
     if (req.body.password && req.body.email) {
         let user = await User.findOne(req.body).select('-password');
         if (user) {
             Jwt.sign({user}, JwtKey, {expiresIn: "2h"}, (error, token) => {
-                // resp.send({token, user});
                 if (error) {
                     resp.status(200).json({status : false, message: 'User not found'});
                 }

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import config from '../config';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddProduct = () => {
     const [name, setName] = useState('');
@@ -49,7 +50,7 @@ const AddProduct = () => {
     //     }
         e.preventDefault();
         if (validate()) {
-            const userId = JSON.parse(localStorage.getItem('user')).user._id;
+            const userId = JSON.parse(localStorage.getItem('user'))._id;
             console.log(name, price, category, company, userId);
             let result = await fetch(productUrl, 
             {
@@ -57,11 +58,16 @@ const AddProduct = () => {
                 body : JSON.stringify({name, price, category, company, userId}),
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization : `Bearer `+JSON.parse(localStorage.getItem('token'))
                 },
             });
             result = await result.json();
             
-            setFormState('Product added successfully');
+            if (result.status) {
+                toast.success(result.message);
+            } else {
+                toast.warn(result.message);
+            }
             setTimeout(()=> {
                 navigate('/products');
             }, 3000)

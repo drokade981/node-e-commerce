@@ -4,9 +4,9 @@ exports.createProduct = async (req, res) => {
     let product = new Product(req.body);
     try {
         let result = await product.save();
-        res.status(201).json({ message: 'Product saved successfully', data: result });
+        res.status(201).json({status: true, message: 'Product added successfully', data: result });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ status: false, error: err.message });
     }
 };
 
@@ -28,7 +28,7 @@ exports.getProducts = async (req, res) => {
         if (products.length > 0) {
             res.status(200).json({status : true, message: 'Product fetched successfully', data: products });
         } else {
-            res.status(200).json({status : true, message: 'Product not found', data: products });
+            res.status(200).json({status : false, message: 'Product not found', data: products });
         }
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -72,7 +72,7 @@ exports.updateProduct = async (req, res) => {
         if (result.modifiedCount > 0 ) {
             res.status(200).json({status : true, message: 'Product updated successfully', data: result });
         } else {
-            res.status(201).json({ message: 'Product not found' });
+            res.status(201).json({status : false, message: 'Product not updated' });
         }
     } catch (err) {
         res.status(400).json({ error: err.message });

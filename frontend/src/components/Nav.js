@@ -21,7 +21,7 @@ const Nav = () => {
                 :
                 <ul className="nav-ul nav-right">
                     <li><Link to="/register">Signup</Link></li>
-                        <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/login">Login</Link></li>
                 </ul>
             }            
         </div>

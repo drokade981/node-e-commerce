@@ -1,5 +1,7 @@
 import Nav from './components/Nav';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
@@ -12,6 +14,18 @@ import ProductList from './components/ProductList';
 function App() {
   return (
     <div className="App">
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     <BrowserRouter>
       <Nav />
       <Routes>
